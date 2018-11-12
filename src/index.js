@@ -3,10 +3,10 @@ const Roll = require("./roll");
 const client = new Discord.Client();
 const PREFIX = "!";
 
-/* TODOS
-figure out deploy strategy (zeit?)
-add again with minimal permissions
-*/
+// Keep alive on remote server
+require("http")
+  .createServer()
+  .listen(3000);
 
 client.on("ready", () => {
   console.log("Connected. Don't mind me");
