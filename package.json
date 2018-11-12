@@ -1,0 +1,11 @@
+{
+  "name": "roll-bot",
+  "version": "0.0.1",
+  "description": "Dota RollBot",
+  "main": "src/index.js",
+  "author": "Colby Blaisdell",
+  "dependencies": {
+    "discord.js": "^11.4.2",
+    "dotenv": "^6.1.0"
+  }
+}
