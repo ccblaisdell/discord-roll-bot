@@ -6,9 +6,9 @@ const {
   removeInvalid
 } = require("./utils");
 
-function rollGroup(members) {
+function rollGroup(members, dieSize) {
   const rolls = members
-    .map(createRoll)
+    .map(createRoll(dieSize))
     .filter(removeInvalid)
     .sort(byValue)
     .map(printRoll);
@@ -20,8 +20,8 @@ function rollGroup(members) {
   return `\`\`\`\n${parties}\`\`\``;
 }
 
-function rollOne(member) {
-  const { value, name } = createRoll(member);
+function rollOne(member, dieSize) {
+  const { value, name } = createRoll(dieSize)(member);
   return `**${name}** rolled **${value}**`;
 }
 

@@ -3,8 +3,8 @@ import * as Roll from "./index";
 
 test("should roll one", t => {
   const result = Roll.one(createMember());
-  t.pass(result.includes("**grif**"));
-  t.pass(result.includes("rolled"));
+  t.true(result.includes("**grif**"));
+  t.true(result.includes("rolled"));
 });
 
 test("should roll group", t => {
@@ -12,10 +12,10 @@ test("should roll group", t => {
   const member_2 = createMember({ displayName: "hop" });
   const member_3 = createMember({ displayName: "stu" });
   const result = Roll.group([member_1, member_2, member_3]);
-  t.pass(result.includes("```"));
-  t.pass(result.includes(": grif"));
-  t.pass(result.includes(": hop"));
-  t.pass(result.includes(": stu"));
+  t.true(result.includes("```"));
+  t.true(result.includes(": grif"));
+  t.true(result.includes(": hop"));
+  t.true(result.includes(": stu"));
 });
 
 test("should sort rolls", t => {
@@ -25,7 +25,7 @@ test("should sort rolls", t => {
     .split("\n")
     .filter(line => line.includes(":"))
     .map(line => line.split(":")[0]);
-  t.pass(
+  t.true(
     values[0] >= values[1] &&
       values[1] >= values[2] &&
       values[2] >= values[3] &&
@@ -36,7 +36,7 @@ test("should sort rolls", t => {
 test("should split into parties", t => {
   let members = createMembers(8);
   let result = Roll.group(members);
-  t.pass(result.split("\n")[6] === "");
+  t.is("", result.split("\n")[6]);
 });
 
 test("should not include bots", t => {
@@ -48,7 +48,7 @@ test("should not include bots", t => {
     .filter(line => line.includes(":"))
     .map(line => line.split(":")[1])
     .filter(name => name === bot.name);
-  t.pass(botResults.length === 0);
+  t.is(0, botResults.length);
 });
 
 test("should not include offline or afk", t => {
@@ -67,7 +67,29 @@ test("should not include offline or afk", t => {
     .filter(line => line.includes(":"))
     .map(line => line.split(":")[1])
     .filter(name => name === "offline" || name === "idle");
-  t.pass(filteredResults.length === 0);
+  t.is(0, filteredResults.length);
+});
+
+test("should respect die size args for group", t => {
+  let members = createMembers(10);
+  let result = Roll.group(members, 1);
+  let values = result
+    .split("\n")
+    .filter(line => line.includes(":"))
+    .map(line => line.trim().split(":")[0])
+    .map(digit => parseInt(digit));
+  t.true(values.every(value => value <= 1));
+});
+
+test("should respect die size args for individual roll", t => {
+  let maxValue = 0;
+  for (let i = 0; i < 100; i++) {
+    let member = createMember();
+    let result = Roll.one(member, 1);
+    let value = parseInt(result.split("**")[3]);
+    maxValue = value > maxValue ? value : maxValue;
+  }
+  t.true(maxValue <= 1);
 });
 
 /*
@@ -87,7 +109,7 @@ function createMember(overrides = {}) {
   };
 }
 
-function createMembers(n) {
+function createMembers(n = 10) {
   const names = [
     "grif",
     "hop",

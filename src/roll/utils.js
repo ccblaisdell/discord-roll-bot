@@ -6,21 +6,23 @@ module.exports = {
   removeInvalid
 };
 
-function createRoll(member) {
-  return {
-    name: member.displayName,
-    status: member.presence.status,
-    value: castDie(),
-    isBot: member.user.bot
+function createRoll(dieSize) {
+  return function(member) {
+    return {
+      name: member.displayName,
+      status: member.presence.status,
+      value: castDie(dieSize),
+      isBot: member.user.bot
+    };
   };
 }
 
-function castDie(max = 100) {
-  return Math.ceil(Math.random() * max);
+function castDie(dieSize = 100) {
+  return Math.ceil(Math.random() * dieSize);
 }
 
 function byValue(rollA, rollB) {
-  return rollA.value > rollB.value ? -1 : rollA.value < rollB.value ? 1 : 0;
+  return rollB.value - rollA.value;
 }
 
 function printRoll(roll) {
