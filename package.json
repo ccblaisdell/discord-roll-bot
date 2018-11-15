@@ -10,6 +10,16 @@
   },
   "scripts": {
     "start": "node -r dotenv/config src/index.js",
-    "deploy": "now --public -e DISCORD_API_TOKEN=@discord_api_token"
+    "deploy": "now --public -e DISCORD_API_TOKEN=@discord_api_token",
+    "test": "ava"
+  },
+  "devDependencies": {
+    "ava": "1.0.0-rc.2"
+  },
+  "ava": {
+    "files": [
+      "**/*test.js",
+      "**/*Test.js"
+    ]
   }
 }
