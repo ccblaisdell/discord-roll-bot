@@ -3,7 +3,8 @@ module.exports = {
   chunk,
   createRoll,
   printRoll,
-  removeInvalid
+  removeInvalid,
+  castDie
 };
 
 function createRoll(dieSize) {
@@ -18,6 +19,9 @@ function createRoll(dieSize) {
 }
 
 function castDie(dieSize = 100) {
+  if (!Number.isInteger(dieSize)) {
+    dieSize = 100;
+  }
   return Math.ceil(Math.random() * dieSize);
 }
 

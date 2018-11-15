@@ -1,5 +1,6 @@
 import test from "ava";
 import * as Roll from "./index";
+import { castDie } from "./utils";
 
 test("should roll one", t => {
   const result = Roll.one(createMember());
@@ -90,6 +91,11 @@ test("should respect die size args for individual roll", t => {
     maxValue = value > maxValue ? value : maxValue;
   }
   t.true(maxValue <= 1);
+});
+
+test("should ignore bad arguments to castDie", t => {
+  let value = castDie("blah");
+  t.true(Number.isInteger(value));
 });
 
 /*
