@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
+const Cmd = require("./argParser");
 const Roll = require("./roll");
 const client = new Discord.Client();
-const PREFIX = "!";
 
 // Keep alive on remote server
 require("http")
@@ -13,11 +13,12 @@ client.on("ready", () => {
 });
 
 client.on("message", msg => {
-  if (msg.content.startsWith(PREFIX + "rollall")) {
-    const result = Roll.group(msg.channel.members);
+  let { command, args } = Cmd.parse(msg.content);
+  if (command === "ROLL_ALL") {
+    const result = Roll.group(msg.channel.members, ...args);
     msg.channel.send(result);
-  } else if (msg.content.startsWith(PREFIX + "roll")) {
-    const result = Roll.one(msg.member);
+  } else if (command === "ROLL") {
+    const result = Roll.one(msg.member, ...args);
     msg.channel.send(result);
   }
 });
