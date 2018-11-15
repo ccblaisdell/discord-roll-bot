@@ -10,7 +10,6 @@
   },
   "scripts": {
     "start": "node -r dotenv/config src/index.js",
-    "deploy": "now --public -e DISCORD_API_TOKEN=@discord_api_token",
     "test": "ava"
   },
   "devDependencies": {
