@@ -1,29 +1,32 @@
 module.exports = {
+  byValue,
+  chunk,
   createRoll,
-  removeInvalid,
-  byRoll,
   printRoll,
-  chunk
+  removeInvalid
 };
 
 function createRoll(member) {
   return {
     name: member.displayName,
     status: member.presence.status,
-    roll: rollDice(),
+    value: castDie(),
     isBot: member.user.bot
   };
 }
 
-const rollDice = (max = 100) => Math.ceil(Math.random() * max);
-
-function byRoll(a, b) {
-  return a.roll > b.roll ? -1 : a.roll < b.roll ? 1 : 0;
+function castDie(max = 100) {
+  return Math.ceil(Math.random() * max);
 }
 
-function printRoll(r) {
-  const roll = r.roll.toString().padStart(3, " ");
-  return `${roll}: ${r.name}`;
+function byValue(rollA, rollB) {
+  return rollA.value > rollB.value ? -1 : rollA.value < rollB.value ? 1 : 0;
+}
+
+function printRoll(roll) {
+  const value = roll.value.toString().padStart(3, " ");
+  const name = roll.name;
+  return `${value}: ${name}`;
 }
 
 function chunk(array, size) {

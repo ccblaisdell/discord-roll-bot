@@ -1,16 +1,16 @@
 const {
+  byValue,
+  chunk,
   createRoll,
-  removeInvalid,
-  byRoll,
   printRoll,
-  chunk
+  removeInvalid
 } = require("./utils");
 
 function rollGroup(members) {
   const rolls = members
     .map(createRoll)
     .filter(removeInvalid)
-    .sort(byRoll)
+    .sort(byValue)
     .map(printRoll);
 
   const parties = chunk(rolls, 5)
@@ -21,8 +21,8 @@ function rollGroup(members) {
 }
 
 function rollOne(member) {
-  const { roll, name } = createRoll(member);
-  return `**${name}** rolled **${roll}**`;
+  const { value, name } = createRoll(member);
+  return `**${name}** rolled **${value}**`;
 }
 
 module.exports = {
