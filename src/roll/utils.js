@@ -7,14 +7,19 @@ module.exports = {
   castDie
 };
 
-function createRoll(dieSize) {
-  return function(member) {
-    return {
-      name: member.displayName,
-      status: member.presence.status,
-      value: castDie(dieSize),
-      isBot: member.user.bot
-    };
+/* valid statuses
+online - user is online
+offline - user is offline or invisible
+idle - user is AFK
+dnd - user is in Do not Disturb
+*/
+
+function createRoll(member, dieSize) {
+  return {
+    name: member.displayName,
+    status: member.presence.status,
+    value: castDie(dieSize),
+    isBot: member.user.bot
   };
 }
 
@@ -54,5 +59,5 @@ function noBots(roll) {
 }
 
 function onlyActive(roll) {
-  return roll.status === "online" || roll.status === "idle";
+  return roll.status === "online";
 }

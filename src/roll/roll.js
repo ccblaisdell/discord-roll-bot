@@ -7,21 +7,21 @@ const {
 } = require("./utils");
 
 function rollGroup(members, dieSize) {
-  const rolls = members
-    .map(createRoll(dieSize))
+  const rolls = members.map(member => createRoll(member, dieSize));
+  const rollStrings = rolls
     .filter(removeInvalid)
     .sort(byValue)
     .map(printRoll);
 
-  const parties = chunk(rolls, 5)
+  const parties = chunk(rollStrings, 5)
     .map(partyRolls => partyRolls.join("\n"))
     .join("\n\n");
 
-  return `\`\`\`\n${parties}\`\`\``;
+  return `\`\`\`\n${parties}\n\`\`\``;
 }
 
 function rollOne(member, dieSize) {
-  const { value, name } = createRoll(dieSize)(member);
+  const { value, name } = createRoll(member, dieSize);
   return `**${name}** rolled **${value}**`;
 }
 
