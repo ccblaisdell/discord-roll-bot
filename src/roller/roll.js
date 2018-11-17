@@ -20,7 +20,7 @@ function rollGroup(members, { dieSize }) {
   return `\`\`\`\n${parties}\n\`\`\``;
 }
 
-function rollOne(member, dieSize) {
+function rollOne(member, { dieSize }) {
   const { value, name } = createRoll(member, dieSize);
   return `**${name}** rolled **${value}**`;
 }

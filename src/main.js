@@ -10,12 +10,12 @@ require("http")
 client.on("ready", () => console.log("Connected!"));
 
 client.on("message", msg => {
-  Roller.handleMessage(
+  let result = Roller.handleMessage(
     msg.content,
     msg.member,
-    msg.channel.members,
-    msg.channel.send
+    msg.channel.members
   );
+  result && msg.channel.send(result);
 });
 
 client.login(process.env.DISCORD_API_TOKEN);

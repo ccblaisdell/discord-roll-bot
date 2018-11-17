@@ -3,16 +3,11 @@ const Roll = require("./roller/roll");
 
 module.exports = { handleMessage };
 
-function handleMessage(text, member, allMembers, sendFn) {
+function handleMessage(text, member, allMembers) {
   let { command, opts } = Cmd.parse(text);
   if (command === "ROLL_ALL") {
-    const result = Roll.group(allMembers, opts);
-    sendFn(result);
-    return result;
+    return Roll.group(allMembers, opts);
   } else if (command === "ROLL_ONE") {
-    const result = Roll.one(member, opts);
-    sendFn(result);
-    return result;
+    return Roll.one(member, opts);
   }
-  return { command, opts };
 }

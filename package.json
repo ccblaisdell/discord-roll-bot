@@ -13,8 +13,7 @@
     "test": "ava"
   },
   "devDependencies": {
-    "ava": "1.0.0-rc.2",
-    "sinon": "^7.1.1"
+    "ava": "1.0.0-rc.2"
   },
   "ava": {
     "files": [
