@@ -52,6 +52,9 @@ test("should not include offline or afk", t => {
   let members = createMembers(5).concat([offline, idle, dnd]);
   let result = parseAll(Roller.handleMessage("!rollall", members[0], members));
   t.is(5, result.lines.length);
+  t.true(result.lines.every(line => line.name !== offline.displayName));
+  t.true(result.lines.every(line => line.name !== idle.displayName));
+  t.true(result.lines.every(line => line.name !== dnd.displayName));
 });
 
 test("should respect die size args for group", t => {
