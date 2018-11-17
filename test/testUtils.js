@@ -1,5 +1,3 @@
-const noOp = () => {};
-
 function createMember(memberAttrs = {}) {
   const { displayName = "grif", status = "online", bot = false } = memberAttrs;
   return {
@@ -54,7 +52,6 @@ function parseAll(text) {
 }
 
 module.exports = {
-  noOp,
   createMember,
   createMembers,
   parseOne,

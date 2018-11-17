@@ -12,8 +12,10 @@ test("should roll one", t => {
 
 test("should roll all", t => {
   let members = createMembers(10);
-  let result = Roller.handleMessage("!rollall", members[0], members);
-  t.true(result.includes("```"));
+  let result = parseAll(Roller.handleMessage("!rollall", members[0], members));
+  t.true(result.text.includes("```"));
+  t.is(10, result.lines.length);
+  t.true(result.lines.every(line => Number.isInteger(line.value)));
 });
 
 test("should sort rolls", t => {
@@ -21,7 +23,7 @@ test("should sort rolls", t => {
   let result = parseAll(Roller.handleMessage("!rollall", members[0], members));
   let { isValid } = result.lines.reduce(
     (acc, line) => {
-      let isValid = acc.lastValue >= line.value;
+      let isValid = acc.isValid && acc.lastValue >= line.value;
       return { lastValue: line.value, isValid };
     },
     { lastValue: 101, isValid: true }
