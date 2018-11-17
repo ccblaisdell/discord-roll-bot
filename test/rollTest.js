@@ -1,5 +1,5 @@
 import test from "ava";
-import Roller from "./interface";
+import Roller from "../src/roller";
 import sinon from "sinon";
 import {
   noOp,
@@ -7,7 +7,7 @@ import {
   createMembers,
   parseOne,
   parseAll
-} from "../testUtils";
+} from "./testUtils";
 
 test("should roll one", t => {
   const sendFn = sinon.spy();

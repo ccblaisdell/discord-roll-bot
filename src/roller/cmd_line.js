@@ -11,9 +11,9 @@ function parse(msg) {
   let dieSize = parseDieSize(args[0]);
 
   if (command.startsWith(PREFIX + "rollall")) {
-    return { command: "ROLL_ALL", args: [dieSize] };
+    return { command: "ROLL_ALL", opts: { dieSize } };
   } else if (command.startsWith(PREFIX + "roll")) {
-    return { command: "ROLL_ONE", args: [dieSize] };
+    return { command: "ROLL_ONE", opts: { dieSize } };
   } else {
     return {};
   }

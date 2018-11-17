@@ -1,18 +1,18 @@
-const Cmd = require("../argParser");
-const Roll = require("../roll");
+const Cmd = require("./roller/cmd_line");
+const Roll = require("./roller/roll");
 
 module.exports = { handleMessage };
 
 function handleMessage(text, member, allMembers, sendFn) {
-  let { command, args } = Cmd.parse(text);
+  let { command, opts } = Cmd.parse(text);
   if (command === "ROLL_ALL") {
-    const result = Roll.group(allMembers, ...args);
+    const result = Roll.group(allMembers, opts);
     sendFn(result);
     return result;
   } else if (command === "ROLL_ONE") {
-    const result = Roll.one(member, ...args);
+    const result = Roll.one(member, opts);
     sendFn(result);
     return result;
   }
-  return { command, args };
+  return { command, opts };
 }

@@ -6,7 +6,7 @@ const {
   removeInvalid
 } = require("./utils");
 
-function rollGroup(members, dieSize) {
+function rollGroup(members, { dieSize }) {
   const rolls = members.map(member => createRoll(member, dieSize));
   const rollStrings = rolls
     .filter(removeInvalid)

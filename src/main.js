@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
-const Roller = require("./interface");
+const Roller = require("./roller");
 
 // Keep alive on remote server
 require("http")
