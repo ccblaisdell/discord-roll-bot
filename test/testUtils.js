@@ -1,7 +1,13 @@
 function createMember(memberAttrs = {}) {
-  const { displayName = "grif", status = "online", bot = false } = memberAttrs;
+  const {
+    displayName = "grif",
+    status = "online",
+    bot = false,
+    id = 1
+  } = memberAttrs;
   return {
     displayName,
+    id,
     presence: {
       status
     },
@@ -24,10 +30,19 @@ function createMembers(n = 10) {
     "skizzie",
     "ron"
   ];
-  return names.slice(0, n).map(displayName => {
-    return createMember({ displayName });
+  return names.slice(0, n).map((displayName, idx) => {
+    return createMember({ displayName, id: idx });
   });
 }
+
+function createChannel(name, numMembers = 10) {
+  return {
+    name,
+    members: createMembers(numMembers)
+  };
+}
+
+// parse result text
 
 function parseOne(text) {
   let split = text.split("**");
@@ -52,6 +67,7 @@ function parseAll(text) {
 }
 
 module.exports = {
+  createChannel,
   createMember,
   createMembers,
   parseOne,

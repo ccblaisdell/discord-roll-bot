@@ -25,7 +25,21 @@ function rollOne(member, { dieSize }) {
   return `**${name}** rolled **${value}**`;
 }
 
+function rollChannel(channels, { channelName, dieSize }) {
+  const members = channels
+    .filter(c => c.name.includes(channelName))
+    .map(c => c.members)
+    .reduce((acc, members) => acc.concat(members))
+    .reduce(dedupMembers, []);
+  return rollGroup(members, { dieSize });
+}
+
 module.exports = {
   group: rollGroup,
-  one: rollOne
+  one: rollOne,
+  channel: rollChannel
 };
+
+function dedupMembers(acc, member) {
+  return acc.some(m => m.id === member.id) ? acc : acc.concat(member);
+}

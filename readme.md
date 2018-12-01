@@ -5,8 +5,8 @@ to your server.
 
 # Usage
 
-The bot has two commands, `!roll` and `!rollall`. Type one of these commands into your text
-room while the bot is online, and it will respond with results.
+The bot has three commands, `!roll`, `!rollall`, and `!rollchannel`. Type one of these commands 
+into your text room while the bot is online, and it will respond with results.
 
 ## !roll [die_size]
 
@@ -36,5 +36,17 @@ the results in descending order.
 > ```
 >   6: ccblaisdell
 >   3: Someone else
+>   1: unlucky schmuck
+> ```
+
+## !rollchannel &lt;channel_name&gt; [die_size]
+
+Roll dice for everyone in every channel that partially matches `channel_name`.
+
+> `!rollchannel voice`  
+> Rollbot [bot]
+> ```
+>  67: ccblaisdell
+>  48: Someone else
 >   1: unlucky schmuck
 > ```

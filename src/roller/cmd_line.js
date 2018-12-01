@@ -8,10 +8,13 @@ function parse(msg) {
   }
 
   let [command, ...args] = msg.split(/\s+/);
-  let dieSize = parseDieSize(args[0]);
+  let dieSize = parseDieSize(args);
+  let channelName = parseChannelName(args);
 
   if (command.startsWith(PREFIX + "rollall")) {
     return { command: "ROLL_ALL", opts: { dieSize } };
+  } else if (command.startsWith(PREFIX + "rollch")) {
+    return { command: "ROLL_CHANNEL", opts: { channelName, dieSize } };
   } else if (command.startsWith(PREFIX + "roll")) {
     return { command: "ROLL_ONE", opts: { dieSize } };
   } else {
@@ -19,7 +22,19 @@ function parse(msg) {
   }
 }
 
-function parseDieSize(maybeStr) {
-  const result = parseInt(maybeStr);
-  return isNaN(result) || !result || result <= 0 ? undefined : result;
+function parseDieSize(args) {
+  let dieSizeArg = args.find(maybeStr => {
+    return isValidDieSize(parseInt(maybeStr));
+  });
+  return dieSizeArg ? parseInt(dieSizeArg) : undefined;
+}
+
+function isValidDieSize(maybeDieSize) {
+  return isNaN(maybeDieSize) || !maybeDieSize || maybeDieSize <= 0
+    ? false
+    : true;
+}
+
+function parseChannelName(args) {
+  return args.find(arg => !isValidDieSize(arg));
 }

@@ -10,11 +10,12 @@ require("http")
 client.on("ready", () => console.log("Connected!"));
 
 client.on("message", msg => {
-  let result = Roller.handleMessage(
-    msg.content,
-    msg.member,
-    msg.channel.members
-  );
+  let result = Roller.handleMessage({
+    allMembers: msg.channel.members,
+    channels: msg.guild.channels,
+    content: msg.content,
+    member: msg.member
+  });
   result && msg.channel.send(result);
 });
 
