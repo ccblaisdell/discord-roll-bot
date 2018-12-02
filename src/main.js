@@ -10,13 +10,17 @@ require("http")
 client.on("ready", () => console.log("Connected!"));
 
 client.on("message", msg => {
-  let result = Roller.handleMessage({
-    allMembers: msg.channel.members,
-    channels: msg.guild.channels,
-    content: msg.content,
-    member: msg.member
-  });
-  result && msg.channel.send(result);
+  try {
+    let result = Roller.handleMessage({
+      allMembers: msg.channel.members,
+      channels: msg.guild.channels,
+      text: msg.content,
+      member: msg.member
+    });
+    result && msg.channel.send(result);
+  } catch (error) {
+    msg.channel.send("☠️ Heck! I borked, sorry!!");
+  }
 });
 
 client.login(process.env.DISCORD_API_TOKEN);

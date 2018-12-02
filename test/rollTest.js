@@ -164,3 +164,45 @@ test("should roll only matching voice channel and respect die size", t => {
   t.is(6, result.lines.length);
   t.is(4, result2.lines.length);
 });
+
+test("rollchannel should require a channel name", t => {
+  let members = createMembers(10);
+  let channels = [createChannel("bingo", 6), createChannel("foobar", 4)];
+  let result = parseAll(
+    Roller.handleMessage({
+      text: "!rollchannel",
+      member: members[0],
+      allMembers: members,
+      channels
+    })
+  );
+  t.true(result.text.toLowerCase().includes("must"));
+});
+
+test("rollchannel should not be case sensitive", t => {
+  let members = createMembers(10);
+  let channels = [createChannel("bingo", 6), createChannel("foobar", 4)];
+  let result = parseAll(
+    Roller.handleMessage({
+      text: "!rollchannel BiNgO",
+      member: members[0],
+      allMembers: members,
+      channels
+    })
+  );
+  t.is(6, result.lines.length);
+});
+
+test("rollchannel should notify if there are no matching channels", t => {
+  let members = createMembers(10);
+  let channels = [createChannel("bingo", 6), createChannel("foobar", 4)];
+  let result = parseAll(
+    Roller.handleMessage({
+      text: "!rollchannel bingpot",
+      member: members[0],
+      allMembers: members,
+      channels
+    })
+  );
+  t.true(result.text.toLowerCase().includes("match"));
+});

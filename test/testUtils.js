@@ -35,10 +35,12 @@ function createMembers(n = 10) {
   });
 }
 
-function createChannel(name, numMembers = 10) {
+function createChannel(name, numMembers = 10, opts = {}) {
   return {
     name,
-    members: createMembers(numMembers)
+    members: createMembers(numMembers),
+    type: "voice",
+    ...opts
   };
 }
 

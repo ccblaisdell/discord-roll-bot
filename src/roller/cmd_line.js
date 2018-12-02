@@ -36,5 +36,8 @@ function isValidDieSize(maybeDieSize) {
 }
 
 function parseChannelName(args) {
-  return args.find(arg => !isValidDieSize(arg));
+  const c = args.find(arg => !isValidDieSize(arg));
+  if (c) {
+    return c.toLowerCase();
+  }
 }

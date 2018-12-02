@@ -26,11 +26,27 @@ function rollOne(member, { dieSize }) {
 }
 
 function rollChannel(channels, { channelName, dieSize }) {
+  if (!channelName) {
+    return "⚠️ You must include a channel name with rollchannel.\nE.g. `!rollchannel bingpot`";
+  }
   const members = channels
-    .filter(c => c.name.includes(channelName))
-    .map(c => c.members)
-    .reduce((acc, members) => acc.concat(members))
+    .filter(c => c.type === "voice")
+    .filter(c => c.name.toLowerCase().includes(channelName))
+    .map(c =>
+      c.members.map(member => ({
+        displayName: member.displayName,
+        id: member.id,
+        presence: { status: member.presence.status },
+        user: { bot: member.user.bot }
+      }))
+    )
+    .reduce((acc, members) => acc.concat(members), []) // flatten
+    .filter(m => !!m) // remove undefined
     .reduce(dedupMembers, []);
+
+  if (members.length === 0) {
+    return `👻 No members were found in channels matching \`${channelName}\``;
+  }
   return rollGroup(members, { dieSize });
 }
 
