@@ -18,11 +18,13 @@ test("should roll one", t => {
 
 test("should roll all", t => {
   let members = createMembers(10);
+  let channels = [createChannel("bingo", 10), createChannel("foobar", 4)];
   let result = parseAll(
     Roller.handleMessage({
       text: "!rollall",
       member: members[0],
-      allMembers: members
+      allMembers: members,
+      channels
     })
   );
   t.true(result.text.includes("```"));
@@ -32,11 +34,13 @@ test("should roll all", t => {
 
 test("should sort rolls", t => {
   let members = createMembers(10);
+  let channels = [createChannel("bingo", 10), createChannel("foobar", 4)];
   let result = parseAll(
     Roller.handleMessage({
       text: "!rollall",
       member: members[0],
-      allMembers: members
+      allMembers: members,
+      channels
     })
   );
   let { isValid } = result.lines.reduce(
@@ -51,22 +55,26 @@ test("should sort rolls", t => {
 
 test("should split into parties", t => {
   let members = createMembers(8);
+  let channels = [createChannel("bingo", 6), createChannel("foobar", 4)];
   let result = Roller.handleMessage({
     text: "!rollall",
     member: members[0],
-    allMembers: members
+    allMembers: members,
+    channels
   });
   t.is("", result.split("\n")[6]);
 });
 
 test("should not include bots", t => {
   let bot = createMember({ displayName: "bot", bot: true });
+  let channels = [createChannel("bingo", 6), createChannel("foobar", 4)];
   let members = createMembers(3).concat(bot);
   let result = parseAll(
     Roller.handleMessage({
       text: "!rollall",
       member: members[0],
-      allMembers: members
+      allMembers: members,
+      channels
     })
   );
   let botResults = result.lines.filter(line => line.name === bot.displayName);
@@ -78,11 +86,13 @@ test("should not include offline or afk", t => {
   let idle = createMember({ displayName: "idle", status: "idle" });
   let dnd = createMember({ displayName: "dnd", status: "dnd" });
   let members = createMembers(5).concat([offline, idle, dnd]);
+  let channels = [createChannel("bingo", 0, { members })];
   let result = parseAll(
     Roller.handleMessage({
       text: "!rollall",
       member: members[0],
-      allMembers: members
+      allMembers: members,
+      channels
     })
   );
   t.is(5, result.lines.length);
@@ -93,11 +103,13 @@ test("should not include offline or afk", t => {
 
 test("should respect die size args for group", t => {
   let members = createMembers(10);
+  let channels = [createChannel("bingo", 6), createChannel("foobar", 4)];
   let result = parseAll(
     Roller.handleMessage({
       text: "!rollall 1",
       member: members[0],
-      allMembers: members
+      allMembers: members,
+      channels
     })
   );
   t.true(result.lines.every(line => line.value <= 1));

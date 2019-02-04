@@ -50,8 +50,30 @@ function rollChannel(channels, { channelName, dieSize }) {
   return rollGroup(members, { dieSize });
 }
 
+function rollAllChannels(channels, { dieSize }) {
+  const members = channels
+    .filter(c => c.type === "voice")
+    .filter(c => c.name.toLowerCase() !== "afk")
+    .map(c =>
+      c.members.map(member => ({
+        displayName: member.displayName,
+        id: member.id,
+        presence: { status: member.presence.status },
+        user: { bot: member.user.bot }
+      }))
+    )
+    .reduce((acc, members) => acc.concat(members), []) // flatten
+    .filter(m => !!m) // remove undefined
+    .reduce(dedupMembers, []);
+
+  if (members.length === 0) {
+    return `👻 No members were found!`;
+  }
+  return rollGroup(members, { dieSize });
+}
+
 module.exports = {
-  group: rollGroup,
+  group: rollAllChannels,
   one: rollOne,
   channel: rollChannel
 };

@@ -28,7 +28,9 @@ function createMembers(n = 10) {
     "dicer",
     "farouk",
     "skizzie",
-    "ron"
+    "ron",
+    "token",
+    "tacocat"
   ];
   return names.slice(0, n).map((displayName, idx) => {
     return createMember({ displayName, id: idx });
