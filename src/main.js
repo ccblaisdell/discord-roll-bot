@@ -4,7 +4,10 @@ const Roller = require("./roller");
 
 // Keep alive on remote server
 require("http")
-  .createServer()
+  .createServer((req, res) => {
+    res.writeHead(200, {"Content-Type": "text/html"});
+    res.end("<html><style>body {display: flex; justify-content: center; align-items: center; font-family: sans-serif; background: black; color: white;}</style><div>RollBot is ready</div>");
+  })
   .listen(3000);
 
 client.on("ready", () => console.log("Connected!"));
