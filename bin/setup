@@ -1,5 +1,5 @@
 # npm install and then run the app
 
-cd ..
+cd /home/ccblaisdell/discord-roll-bot
 npm install
 nodejs src/main.js
