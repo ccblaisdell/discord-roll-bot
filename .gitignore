@@ -1,3 +1,7 @@
 node_modules
 .env
 notes.md
+ops/DO_terraform_token.txt
+ops/.terraform
+ops/terraform.tfstate
+

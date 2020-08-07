@@ -1,0 +1,5 @@
+# npm install and then run the app
+
+cd ..
+npm install
+nodejs src/main.js
