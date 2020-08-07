@@ -80,7 +80,7 @@ runcmd:
   - [
       git,
       clone,
-      "git@github.com:ccblaisdell/discord-roll-bot.git",
+      "https://github.com/ccblaisdell/discord-roll-bot.git",
       "/home/ccblaisdell/discord-roll-bot",
     ]
   - ["/home/ccblaisdell/discord-roll-bot/bin/setup"]
