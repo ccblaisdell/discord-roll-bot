@@ -73,6 +73,7 @@ apt:
 
 packages:
   - nodejs
+  - nginx
 
 package_upgrade: true
 
