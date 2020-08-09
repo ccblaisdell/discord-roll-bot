@@ -15,5 +15,5 @@ resource "digitalocean_droplet" "blazedell" {
 }
 
 output "instance_ip_addr" {
-  value = digitalocean_droplet.blazdell.ipv4_address
+  value = digitalocean_droplet.blazedell.ipv4_address
 }
