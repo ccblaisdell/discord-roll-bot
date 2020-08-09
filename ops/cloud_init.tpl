@@ -81,15 +81,12 @@ write_files:
     owner: root:root
     permissions: "0644"
     # right now this simply points port 80 at the rollbot server
-    # there must be something invalid here
     content: |
       server {
-          listen 80 proxy_protocol;
+          listen 80;
           server_name _;
 
           location / {
-              proxy_set_header Host $host;
-              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
               proxy_pass http://localhost:3000;
           }
       }
@@ -103,6 +100,6 @@ runcmd:
     ]
   - ["/home/ccblaisdell/discord-roll-bot/bin/setup"]
   - [sudo, rm, "/etc/nginx/sites-enabled/default"]
-  - [pm2, start, "/home/ccblaisdel/discord-rollbot/src/main.js"]
+  - [pm2, start, "/home/ccblaisdell/discord-roll-bot/src/main.js"]
   - [sudo, service, nginx, enable]
   - [sudo, service, nginx, start]
