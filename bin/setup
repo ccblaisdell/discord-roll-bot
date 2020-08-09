@@ -2,4 +2,3 @@ npm install pm2 -g
 cd /home/ccblaisdell/discord-roll-bot
 npm install
 pm2 start src/main.js
-echo "Starting Rollbot"
