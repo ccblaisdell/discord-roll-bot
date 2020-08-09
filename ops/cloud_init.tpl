@@ -2,7 +2,6 @@
 ssh_deletekeys: True
 # disable ability to login via pw
 ssh_pwauth: False
-disable_root: True
 
 users:
   - name: ccblaisdell
@@ -79,7 +78,7 @@ package_upgrade: true
 
 write_files:
   - path: /etc/nginx/sites-enabled/rollbot
-    owner: ccblaisdell:root
+    owner: root:root
     permissions: "0644"
     # right now this simply points port 80 at the rollbot server
     # there must be something invalid here
