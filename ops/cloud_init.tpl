@@ -2,7 +2,6 @@
 ssh_deletekeys: True
 # disable ability to login via pw
 ssh_pwauth: False
-disable_root: True
 
 users:
   - name: ccblaisdell
@@ -77,20 +76,21 @@ packages:
 
 package_upgrade: true
 
-# write_files:
-#   - path: /etc/nginx/sites-enabled/rollbot
-#     permissions: "0644"
-#     content: |
-#     server {
-#         listen 80;
-#         server_name blazedell.com;
+write_files:
+  - path: /etc/nginx/sites-enabled/default
+    owner: root:root
+    permissions: "0644"
+    content: |
+    server {
+        listen 80;
+        server_name _;
 
-#         location / {
-#             proxy_pass http://localhost:3000/;
-#             proxy_set_header Host $host;
-#             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-#         }
-#     }
+        location / {
+            proxy_pass http://localhost:3000/;
+            proxy_set_header Host $host;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+    }
 
 runcmd:
   - [
