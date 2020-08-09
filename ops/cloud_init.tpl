@@ -82,13 +82,13 @@ write_files:
     permissions: "0644"
     content: |
     server {
-        listen 80;
+        listen 80 proxy_protocol;
         server_name _;
 
         location / {
-            proxy_pass http://localhost:3000/;
             proxy_set_header Host $host;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_pass http://localhost:3000;
         }
     }
 
