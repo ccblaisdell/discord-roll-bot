@@ -6,7 +6,7 @@ provider "digitalocean" {
 }
 
 # Create a new Web Droplet in the nyc2 region
-resource "digitalocean_droplet" "web" {
+resource "digitalocean_droplet" "blazedell" {
   image  = "ubuntu-18-04-x64"
   name   = "web-1"
   region = "nyc1"
@@ -15,5 +15,5 @@ resource "digitalocean_droplet" "web" {
 }
 
 output "instance_ip_addr" {
-  value = digitalocean_droplet.web.ipv4_address
+  value = digitalocean_droplet.blazdell.ipv4_address
 }
