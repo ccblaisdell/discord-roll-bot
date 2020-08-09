@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "author": "Colby Blaisdell",
   "dependencies": {
+    "@sentry/node": "5.20.1",
     "discord.js": "^11.4.2",
     "dotenv": "^6.1.0"
   },

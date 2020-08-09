@@ -99,7 +99,3 @@ runcmd:
       "/home/ccblaisdell/discord-roll-bot",
     ]
   - ["/home/ccblaisdell/discord-roll-bot/bin/setup"]
-  - [sudo, rm, "/etc/nginx/sites-enabled/default"]
-  - [pm2, start, "/home/ccblaisdell/discord-roll-bot/src/main.js"]
-  - [sudo, service, nginx, enable]
-  - [sudo, service, nginx, start]
