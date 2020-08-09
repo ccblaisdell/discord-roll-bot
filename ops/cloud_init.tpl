@@ -77,9 +77,10 @@ packages:
 package_upgrade: true
 
 write_files:
-  - path: /etc/nginx/sites-enabled/default
-    owner: root:root
+  - path: /etc/nginx/sites-enabled/rollbot
+    owner: ccblaisdell:root
     permissions: "0644"
+    # right now this simply points port 80 at the rollbot server
     content: |
     server {
         listen 80 proxy_protocol;
@@ -100,3 +101,7 @@ runcmd:
       "/home/ccblaisdell/discord-roll-bot",
     ]
   - ["/home/ccblaisdell/discord-roll-bot/bin/setup"]
+  - [sudo, rm, "/etc/nginx/sites-enabled/default"]
+  - [pm2, start, "/home/ccblaisdel/discord-rollbot/src/main.js"]
+  - [sudo, service, nginx, enable]
+  - [sudo, service, nginx, start]
