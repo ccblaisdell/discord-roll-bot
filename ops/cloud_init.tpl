@@ -77,6 +77,17 @@ packages:
 
 package_upgrade: true
 
+write_files:
+  - path: /etc/nginx/sites-enabled/rollbot
+    owner: ccblaisdell:ccblaisdell
+    permissions: "0644"
+    content: |
+      location / {
+          proxy_pass http://localhost:3000/;
+          proxy_set_header Host $host;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      }
+
 runcmd:
   - [
       git,
