@@ -79,7 +79,7 @@ package_upgrade: true
 
 write_files:
   - path: /etc/nginx/sites-enabled/rollbot
-    owner: ccblaisdell:ccblaisdell
+    owner: ccblaisdell
     permissions: "0644"
     content: |
       location / {
