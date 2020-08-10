@@ -1,5 +1,6 @@
 # Probably this variable is initialized from the CLI when running `plan`
 variable "do_token" {}
+variable "discord_api_token" {}
 
 provider "digitalocean" {
   token = var.do_token
@@ -11,13 +12,7 @@ resource "digitalocean_droplet" "web" {
   name   = "web-1"
   region = "nyc1"
   size   = "s-1vcpu-1gb"
-
-  provisioner "file" {
-    source      = "../.env"
-    destination = "/home/ccblaisdell/.rollbot-env"
-  }
-
-  user_data = templatefile("./cloud_init.tpl", {})
+  user_data = templatefile("./cloud_init.tpl", { discord_api_token: var.discord_api_token })
 }
 
 output "instance_ip_addr" {
