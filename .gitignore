@@ -4,6 +4,7 @@ notes.md
 ops/DO_terraform_token.txt
 ops/.terraform
 ops/terraform.tfstate
+ops/terraform.tfstate.lock.info
 ops/terraform.tfstate.backup
 ops/terraform.tfvars
 
