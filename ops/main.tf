@@ -14,7 +14,7 @@ resource "digitalocean_droplet" "web" {
 
   provisioner "file" {
     source      = "../.env"
-    destination = "/home/ccblaisdell/discord-roll-bot/.env"
+    destination = "/home/ccblaisdell/.rollbot-env"
   }
 
   user_data = templatefile("./cloud_init.tpl", {})
