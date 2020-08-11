@@ -3,5 +3,5 @@ cd /home/ccblaisdell/discord-roll-bot
 npm install
 sudo mv /home/ccblaisdell/.discord-roll-bot-env /home/ccblaisdell/discord-roll-bot/.env
 sudo rm /etc/nginx/sites-enabled/default
-pm2 start npm -- start
+sudo pm2 start npm -- start
 sudo service nginx restart

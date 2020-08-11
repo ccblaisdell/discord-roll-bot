@@ -5,17 +5,16 @@ to your server.
 
 # Usage
 
-The bot has three commands, `!roll`, `!rollall`, and `!rollchannel`. Type one of these commands 
-into your text room while the bot is online, and it will respond with results.
+The bot has three commands, `!roll`, `!rollself`, and `!rollchannel`. Type one of these commands into your text room while the bot is online, and it will respond with results.
 
-## !roll [die_size]
+## !rollself [die_size]
 
 Roll a single 100-sided (or `die_size`-sided) die for you, and respond with the results for everone to see.
 
-> `!roll`  
+> `!rollself`  
 > Rollbot [bot] **ccblaisdell** rolled **67**
 >
-> `!roll 6`  
+> `!rollself 6`  
 > Rollbot [bot] **ccblaisdell** rolled **2**
 
 ## !rollall [die_size]
@@ -23,7 +22,7 @@ Roll a single 100-sided (or `die_size`-sided) die for you, and respond with the 
 Roll dice for everyone in the room who is not offline, idle, or dnd. It will respond with
 the results in descending order.
 
-> `!rollall`  
+> `!roll`  
 > Rollbot [bot]
 > ```
 >  67: ccblaisdell
@@ -31,7 +30,7 @@ the results in descending order.
 >   1: unlucky schmuck
 > ```
 
-> `!rollall 6`  
+> `!roll 6`  
 > Rollbot [bot]
 > ```
 >   6: ccblaisdell
@@ -43,7 +42,7 @@ the results in descending order.
 
 Roll dice for everyone in every channel that partially matches `channel_name`.
 
-> `!rollchannel voice`  
+> `!roll voice`  
 > Rollbot [bot]
 > ```
 >  67: ccblaisdell

@@ -5,34 +5,38 @@ import {
   createMember,
   createMembers,
   parseOne,
-  parseAll
+  parseAll,
 } from "./testUtils";
 
-test("should roll one", t => {
+test("should roll one", (t) => {
   let member = createMember();
-  let result = Roller.handleMessage({ text: "!roll", member, allMembers: [] });
+  let result = Roller.handleMessage({
+    text: "!rollme",
+    member,
+    allMembers: [],
+  });
   let parsedResult = parseOne(result);
   t.is(member.displayName, parsedResult.name);
   t.true(result.includes("rolled"));
 });
 
-test("should roll all", t => {
+test("should roll all", (t) => {
   let members = createMembers(10);
   let channels = [createChannel("bingo", 10), createChannel("foobar", 4)];
   let result = parseAll(
     Roller.handleMessage({
-      text: "!rollall",
+      text: "!roll",
       member: members[0],
       allMembers: members,
-      channels
+      channels,
     })
   );
   t.true(result.text.includes("```"));
   t.is(10, result.lines.length);
-  t.true(result.lines.every(line => Number.isInteger(line.value)));
+  t.true(result.lines.every((line) => Number.isInteger(line.value)));
 });
 
-test("should sort rolls", t => {
+test("should sort rolls", (t) => {
   let members = createMembers(10);
   let channels = [createChannel("bingo", 10), createChannel("foobar", 4)];
   let result = parseAll(
@@ -40,7 +44,7 @@ test("should sort rolls", t => {
       text: "!rollall",
       member: members[0],
       allMembers: members,
-      channels
+      channels,
     })
   );
   let { isValid } = result.lines.reduce(
@@ -53,19 +57,19 @@ test("should sort rolls", t => {
   t.true(isValid);
 });
 
-test("should split into parties", t => {
+test("should split into parties", (t) => {
   let members = createMembers(8);
   let channels = [createChannel("bingo", 6), createChannel("foobar", 4)];
   let result = Roller.handleMessage({
     text: "!rollall",
     member: members[0],
     allMembers: members,
-    channels
+    channels,
   });
   t.is("", result.split("\n")[6]);
 });
 
-test("should not include bots", t => {
+test("should not include bots", (t) => {
   let bot = createMember({ displayName: "bot", bot: true });
   let channels = [createChannel("bingo", 6), createChannel("foobar", 4)];
   let members = createMembers(3).concat(bot);
@@ -74,14 +78,14 @@ test("should not include bots", t => {
       text: "!rollall",
       member: members[0],
       allMembers: members,
-      channels
+      channels,
     })
   );
-  let botResults = result.lines.filter(line => line.name === bot.displayName);
+  let botResults = result.lines.filter((line) => line.name === bot.displayName);
   t.is(0, botResults.length);
 });
 
-test("should not include offline or afk", t => {
+test("should not include offline or afk", (t) => {
   let offline = createMember({ displayName: "offline", status: "offline" });
   let idle = createMember({ displayName: "idle", status: "idle" });
   let dnd = createMember({ displayName: "dnd", status: "dnd" });
@@ -92,16 +96,16 @@ test("should not include offline or afk", t => {
       text: "!rollall",
       member: members[0],
       allMembers: members,
-      channels
+      channels,
     })
   );
   t.is(5, result.lines.length);
-  t.true(result.lines.every(line => line.name !== offline.displayName));
-  t.true(result.lines.every(line => line.name !== idle.displayName));
-  t.true(result.lines.every(line => line.name !== dnd.displayName));
+  t.true(result.lines.every((line) => line.name !== offline.displayName));
+  t.true(result.lines.every((line) => line.name !== idle.displayName));
+  t.true(result.lines.every((line) => line.name !== dnd.displayName));
 });
 
-test("should respect die size args for group", t => {
+test("should respect die size args for group", (t) => {
   let members = createMembers(10);
   let channels = [createChannel("bingo", 6), createChannel("foobar", 4)];
   let result = parseAll(
@@ -109,24 +113,38 @@ test("should respect die size args for group", t => {
       text: "!rollall 1",
       member: members[0],
       allMembers: members,
-      channels
+      channels,
     })
   );
-  t.true(result.lines.every(line => line.value <= 1));
+  t.true(result.lines.every((line) => line.value <= 1));
 });
 
-test("should respect die size args for individual roll", t => {
+test("should respect die size args for individual roll", (t) => {
   let maxValue = 0;
   let member = createMember();
   for (let i = 0; i < 100; i++) {
-    let result = parseOne(Roller.handleMessage({ text: "!roll 1", member }));
+    let result = parseOne(Roller.handleMessage({ text: "!rollme 1", member }));
     t.log(result);
     maxValue = result.value > maxValue ? result.value : maxValue;
   }
   t.true(maxValue <= 1);
 });
 
-test("should roll only matching voice channel", t => {
+test("should roll only matching voice channel without `rollchannel`", (t) => {
+  let members = createMembers(10);
+  let channel = createChannel("bingo", 6);
+  let result = parseAll(
+    Roller.handleMessage({
+      text: "!roll bingo",
+      member: members[0],
+      allMembers: members,
+      channels: [channel],
+    })
+  );
+  t.is(6, result.lines.length);
+});
+
+test("should roll only matching voice channel", (t) => {
   let members = createMembers(10);
   let channel = createChannel("bingo", 6);
   let result = parseAll(
@@ -134,27 +152,27 @@ test("should roll only matching voice channel", t => {
       text: "!rollchannel bingo",
       member: members[0],
       allMembers: members,
-      channels: [channel]
+      channels: [channel],
     })
   );
   t.is(6, result.lines.length);
 });
 
-test("should roll partially matching voice channel", t => {
+test("should roll partially matching voice channel", (t) => {
   let members = createMembers(10);
   let channel = createChannel("bingo", 6);
   let result = parseAll(
     Roller.handleMessage({
-      text: "!rollchannel bin",
+      text: "!roll bin",
       member: members[0],
       allMembers: members,
-      channels: [channel]
+      channels: [channel],
     })
   );
   t.is(6, result.lines.length);
 });
 
-test("should roll only matching voice channel and respect die size", t => {
+test("should roll only matching voice channel and respect die size", (t) => {
   let members = createMembers(10);
   let channels = [createChannel("bingo", 6), createChannel("foobar", 4)];
   let result = parseAll(
@@ -162,7 +180,7 @@ test("should roll only matching voice channel and respect die size", t => {
       text: "!rollchannel 1 bingo",
       member: members[0],
       allMembers: members,
-      channels
+      channels,
     })
   );
   let result2 = parseAll(
@@ -170,14 +188,14 @@ test("should roll only matching voice channel and respect die size", t => {
       text: "!rollchannel foobar 1",
       member: members[0],
       allMembers: members,
-      channels
+      channels,
     })
   );
   t.is(6, result.lines.length);
   t.is(4, result2.lines.length);
 });
 
-test("rollchannel should require a channel name", t => {
+test("rollchannel should require a channel name", (t) => {
   let members = createMembers(10);
   let channels = [createChannel("bingo", 6), createChannel("foobar", 4)];
   let result = parseAll(
@@ -185,13 +203,13 @@ test("rollchannel should require a channel name", t => {
       text: "!rollchannel",
       member: members[0],
       allMembers: members,
-      channels
+      channels,
     })
   );
   t.true(result.text.toLowerCase().includes("must"));
 });
 
-test("rollchannel should not be case sensitive", t => {
+test("rollchannel should not be case sensitive", (t) => {
   let members = createMembers(10);
   let channels = [createChannel("bingo", 6), createChannel("foobar", 4)];
   let result = parseAll(
@@ -199,13 +217,13 @@ test("rollchannel should not be case sensitive", t => {
       text: "!rollchannel BiNgO",
       member: members[0],
       allMembers: members,
-      channels
+      channels,
     })
   );
   t.is(6, result.lines.length);
 });
 
-test("rollchannel should notify if there are no matching channels", t => {
+test("rollchannel should notify if there are no matching channels", (t) => {
   let members = createMembers(10);
   let channels = [createChannel("bingo", 6), createChannel("foobar", 4)];
   let result = parseAll(
@@ -213,7 +231,7 @@ test("rollchannel should notify if there are no matching channels", t => {
       text: "!rollchannel bingpot",
       member: members[0],
       allMembers: members,
-      channels
+      channels,
     })
   );
   t.true(result.text.toLowerCase().includes("match"));
