@@ -17,7 +17,7 @@ Roll a single 100-sided (or `die_size`-sided) die for you, and respond with the 
 > `!rollself 6`  
 > Rollbot [bot] **ccblaisdell** rolled **2**
 
-## !rollall [die_size]
+## !roll [die_size]
 
 Roll dice for everyone in the room who is not offline, idle, or dnd. It will respond with
 the results in descending order.
@@ -38,7 +38,7 @@ the results in descending order.
 >   1: unlucky schmuck
 > ```
 
-## !rollchannel &lt;channel_name&gt; [die_size]
+## !roll channel_name [die_size]
 
 Roll dice for everyone in every channel that partially matches `channel_name`.
 
