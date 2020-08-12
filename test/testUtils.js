@@ -3,17 +3,17 @@ function createMember(memberAttrs = {}) {
     displayName = "grif",
     status = "online",
     bot = false,
-    id = 1
+    id = 1,
   } = memberAttrs;
   return {
     displayName,
     id,
     presence: {
-      status
+      status,
     },
     user: {
-      bot
-    }
+      bot,
+    },
   };
 }
 
@@ -30,7 +30,7 @@ function createMembers(n = 10) {
     "skizzie",
     "ron",
     "token",
-    "tacocat"
+    "tacocat",
   ];
   return names.slice(0, n).map((displayName, idx) => {
     return createMember({ displayName, id: idx });
@@ -42,7 +42,7 @@ function createChannel(name, numMembers = 10, opts = {}) {
     name,
     members: createMembers(numMembers),
     type: "voice",
-    ...opts
+    ...opts,
   };
 }
 
@@ -58,13 +58,13 @@ function parseOne(text) {
 function parseAll(text) {
   let lines = text
     .split("\n")
-    .filter(line => line.includes(":"))
-    .map(line => {
+    .filter((line) => line.includes(":"))
+    .map((line) => {
       let [value, name] = line.split(":");
       return {
         text: line,
         value: parseInt(value.trim()),
-        name: name.trim()
+        name: name.trim(),
       };
     });
   return { lines, text };
@@ -75,5 +75,5 @@ module.exports = {
   createMember,
   createMembers,
   parseOne,
-  parseAll
+  parseAll,
 };

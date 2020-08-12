@@ -7,6 +7,7 @@ import {
   parseOne,
   parseAll,
 } from "./testUtils";
+import { parse } from "../src/roller/cmd_line";
 
 test("should roll one", (t) => {
   let member = createMember();
@@ -18,6 +19,23 @@ test("should roll one", (t) => {
   let parsedResult = parseOne(result);
   t.is(member.displayName, parsedResult.name);
   t.true(result.includes("rolled"));
+});
+
+test("should roll all with just `!r`", (t) => {
+  let members = createMembers(10);
+  let channels = [createChannel("bingo", 10), createChannel("foobar", 4)];
+  const msg = {
+    text: "!r",
+    member: members[0],
+    allMembers: members,
+    channels,
+  };
+  t.log(parse(msg.text));
+  const resp = Roller.handleMessage(msg);
+  let result = parseAll(resp);
+  t.true(result.text.includes("```"));
+  t.is(10, result.lines.length);
+  t.true(result.lines.every((line) => Number.isInteger(line.value)));
 });
 
 test("should roll all", (t) => {
