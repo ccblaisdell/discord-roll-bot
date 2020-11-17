@@ -4,7 +4,7 @@ module.exports = {
   createRoll,
   printRoll,
   removeInvalid,
-  castDie
+  castDie,
 };
 
 /* valid statuses
@@ -19,7 +19,7 @@ function createRoll(member, dieSize) {
     name: member.displayName,
     status: member.presence.status,
     value: castDie(dieSize),
-    isBot: member.user.bot
+    isBot: member.user.bot,
   };
 }
 

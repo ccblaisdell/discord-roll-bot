@@ -3,18 +3,15 @@ const {
   chunk,
   createRoll,
   printRoll,
-  removeInvalid
+  removeInvalid,
 } = require("./utils");
 
 function rollGroup(members, { dieSize }) {
-  const rolls = members.map(member => createRoll(member, dieSize));
-  const rollStrings = rolls
-    .filter(removeInvalid)
-    .sort(byValue)
-    .map(printRoll);
+  const rolls = members.map((member) => createRoll(member, dieSize));
+  const rollStrings = rolls.filter(removeInvalid).sort(byValue).map(printRoll);
 
   const parties = chunk(rollStrings, 5)
-    .map(partyRolls => partyRolls.join("\n"))
+    .map((partyRolls) => partyRolls.join("\n"))
     .join("\n\n");
 
   return `\`\`\`\n${parties}\n\`\`\``;
@@ -30,18 +27,18 @@ function rollChannel(channels, { channelName, dieSize }) {
     return "⚠️ You must include a channel name with rollchannel.\nE.g. `!rollchannel bingpot`";
   }
   const members = channels
-    .filter(c => c.type === "voice")
-    .filter(c => c.name.toLowerCase().includes(channelName))
-    .map(c =>
-      c.members.map(member => ({
+    .filter((c) => c.type === "voice")
+    .filter((c) => c.name.toLowerCase().includes(channelName))
+    .map((c) =>
+      c.members.map((member) => ({
         displayName: member.displayName,
         id: member.id,
         presence: { status: member.presence.status },
-        user: { bot: member.user.bot }
+        user: { bot: member.user.bot },
       }))
     )
     .reduce((acc, members) => acc.concat(members), []) // flatten
-    .filter(m => !!m) // remove undefined
+    .filter((m) => !!m) // remove undefined
     .reduce(dedupMembers, []);
 
   if (members.length === 0) {
@@ -52,18 +49,18 @@ function rollChannel(channels, { channelName, dieSize }) {
 
 function rollAllChannels(channels, { dieSize }) {
   const members = channels
-    .filter(c => c.type === "voice")
-    .filter(c => c.name.toLowerCase() !== "afk")
-    .map(c =>
-      c.members.map(member => ({
+    .filter((c) => c.type === "voice")
+    .filter((c) => c.name.toLowerCase() !== "afk")
+    .map((c) =>
+      c.members.map((member) => ({
         displayName: member.displayName,
         id: member.id,
         presence: { status: member.presence.status },
-        user: { bot: member.user.bot }
+        user: { bot: member.user.bot },
       }))
     )
     .reduce((acc, members) => acc.concat(members), []) // flatten
-    .filter(m => !!m) // remove undefined
+    .filter((m) => !!m) // remove undefined
     .reduce(dedupMembers, []);
 
   if (members.length === 0) {
@@ -75,9 +72,9 @@ function rollAllChannels(channels, { dieSize }) {
 module.exports = {
   group: rollAllChannels,
   one: rollOne,
-  channel: rollChannel
+  channel: rollChannel,
 };
 
 function dedupMembers(acc, member) {
-  return acc.some(m => m.id === member.id) ? acc : acc.concat(member);
+  return acc.some((m) => m.id === member.id) ? acc : acc.concat(member);
 }
