@@ -3,7 +3,7 @@ module.exports = {
   chunk,
   createRoll,
   printRoll,
-  removeInvalid,
+  removeInvalid: noBots,
   castDie,
 };
 
@@ -50,14 +50,6 @@ function chunk(array, size) {
   return result;
 }
 
-function removeInvalid(roll) {
-  return noBots(roll) && onlyActive(roll);
-}
-
 function noBots(roll) {
   return !roll.isBot;
-}
-
-function onlyActive(roll) {
-  return roll.status === "online";
 }
