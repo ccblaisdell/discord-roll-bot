@@ -27,8 +27,8 @@ client.on("ready", () => console.log("Connected!"));
 client.on("message", (msg) => {
   try {
     let result = Roller.handleMessage({
-      allMembers: msg.channel.members,
-      channels: msg.guild.channels,
+      allMembers: msg.channel.members.array(),
+      channels: msg.guild.channels.cache.array(),
       text: msg.content,
       member: msg.member,
     });
