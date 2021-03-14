@@ -30,12 +30,30 @@ test("should roll all with just `!r`", (t) => {
     allMembers: members,
     channels,
   };
-  t.log(parse(msg.text));
   const resp = Roller.handleMessage(msg);
   let result = parseAll(resp);
   t.true(result.text.includes("```"));
   t.is(10, result.lines.length);
   t.true(result.lines.every((line) => Number.isInteger(line.value)));
+});
+
+test("command should not be case sensitive", (t) => {
+  let members = createMembers(10);
+  let channels = [createChannel("bingo", 10), createChannel("foobar", 4)];
+  let commands = ["!r", "!R", "!rOlL", "!ROLLall"];
+  for (let cmd of commands) {
+    const msg = {
+      text: cmd,
+      member: members[0],
+      allMembers: members,
+      channels,
+    };
+    const resp = Roller.handleMessage(msg);
+    let result = parseAll(resp);
+    t.true(result.text.includes("```"));
+    t.is(10, result.lines.length);
+    t.true(result.lines.every((line) => Number.isInteger(line.value)));
+  }
 });
 
 test("should roll all", (t) => {

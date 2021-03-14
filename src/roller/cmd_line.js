@@ -3,6 +3,7 @@ module.exports = { parse };
 const PREFIX = "!";
 
 function parse(msg) {
+  msg = String(msg).toLowerCase();
   if (!msg.startsWith(PREFIX + "r")) {
     return {};
   }
