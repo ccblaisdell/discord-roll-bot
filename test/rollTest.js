@@ -14,7 +14,6 @@ test("should roll one", (t) => {
   let result = Roller.handleMessage({
     text: "!rollme",
     member,
-    allMembers: [],
   });
   let parsedResult = parseOne(result);
   t.is(member.displayName, parsedResult.name);
@@ -22,12 +21,10 @@ test("should roll one", (t) => {
 });
 
 test("should roll all with just `!r`", (t) => {
-  let members = createMembers(10);
   let channels = [createChannel("bingo", 10), createChannel("foobar", 4)];
   const msg = {
     text: "!r",
-    member: members[0],
-    allMembers: members,
+    member: createMember(),
     channels,
   };
   const resp = Roller.handleMessage(msg);
@@ -38,14 +35,12 @@ test("should roll all with just `!r`", (t) => {
 });
 
 test("command should not be case sensitive", (t) => {
-  let members = createMembers(10);
   let channels = [createChannel("bingo", 10), createChannel("foobar", 4)];
   let commands = ["!r", "!R", "!rOlL", "!ROLLall"];
   for (let cmd of commands) {
     const msg = {
       text: cmd,
-      member: members[0],
-      allMembers: members,
+      member: createMember(),
       channels,
     };
     const resp = Roller.handleMessage(msg);
@@ -57,13 +52,11 @@ test("command should not be case sensitive", (t) => {
 });
 
 test("should roll all", (t) => {
-  let members = createMembers(10);
   let channels = [createChannel("bingo", 10), createChannel("foobar", 4)];
   let result = parseAll(
     Roller.handleMessage({
       text: "!roll",
-      member: members[0],
-      allMembers: members,
+      member: createMember(),
       channels,
     })
   );
@@ -73,13 +66,11 @@ test("should roll all", (t) => {
 });
 
 test("should sort rolls", (t) => {
-  let members = createMembers(10);
   let channels = [createChannel("bingo", 10), createChannel("foobar", 4)];
   let result = parseAll(
     Roller.handleMessage({
       text: "!rollall",
-      member: members[0],
-      allMembers: members,
+      member: createMember(),
       channels,
     })
   );
@@ -94,12 +85,10 @@ test("should sort rolls", (t) => {
 });
 
 test("should split into parties", (t) => {
-  let members = createMembers(8);
   let channels = [createChannel("bingo", 6), createChannel("foobar", 4)];
   let result = Roller.handleMessage({
     text: "!rollall",
-    member: members[0],
-    allMembers: members,
+    member: createMember(),
     channels,
   });
   t.is("", result.split("\n")[6]);
@@ -107,13 +96,15 @@ test("should split into parties", (t) => {
 
 test("should not include bots", (t) => {
   let bot = createMember({ displayName: "bot", bot: true });
-  let channels = [createChannel("bingo", 6), createChannel("foobar", 4)];
-  let members = createMembers(3).concat(bot);
+  let members = createMembers(5).set("bot", bot);
+  let channels = [
+    createChannel("bingo", 6, { members }),
+    createChannel("foobar", 4),
+  ];
   let result = parseAll(
     Roller.handleMessage({
       text: "!rollall",
-      member: members[0],
-      allMembers: members,
+      member: createMember(),
       channels,
     })
   );
@@ -125,13 +116,15 @@ test("should not include offline or afk", (t) => {
   let offline = createMember({ displayName: "offline", status: "offline" });
   let idle = createMember({ displayName: "idle", status: "idle" });
   let dnd = createMember({ displayName: "dnd", status: "dnd" });
-  let members = createMembers(5).concat([offline, idle, dnd]);
+  let members = createMembers(5)
+    .set("offline", offline)
+    .set("idle", idle)
+    .set("dnd", dnd);
   let channels = [createChannel("bingo", 0, { members })];
   let result = parseAll(
     Roller.handleMessage({
       text: "!rollall",
-      member: members[0],
-      allMembers: members,
+      member: createMember(),
       channels,
     })
   );
@@ -142,13 +135,11 @@ test("should not include offline or afk", (t) => {
 });
 
 test("should respect die size args for group", (t) => {
-  let members = createMembers(10);
   let channels = [createChannel("bingo", 6), createChannel("foobar", 4)];
   let result = parseAll(
     Roller.handleMessage({
       text: "!rollall 1",
-      member: members[0],
-      allMembers: members,
+      member: createMember(),
       channels,
     })
   );
@@ -167,13 +158,11 @@ test("should respect die size args for individual roll", (t) => {
 });
 
 test("should roll only matching voice channel without `rollchannel`", (t) => {
-  let members = createMembers(10);
   let channel = createChannel("bingo", 6);
   let result = parseAll(
     Roller.handleMessage({
       text: "!roll bingo",
-      member: members[0],
-      allMembers: members,
+      member: createMember(),
       channels: [channel],
     })
   );
@@ -181,13 +170,11 @@ test("should roll only matching voice channel without `rollchannel`", (t) => {
 });
 
 test("should roll only matching voice channel", (t) => {
-  let members = createMembers(10);
   let channel = createChannel("bingo", 6);
   let result = parseAll(
     Roller.handleMessage({
       text: "!rollchannel bingo",
-      member: members[0],
-      allMembers: members,
+      member: createMember(),
       channels: [channel],
     })
   );
@@ -195,13 +182,11 @@ test("should roll only matching voice channel", (t) => {
 });
 
 test("should roll partially matching voice channel", (t) => {
-  let members = createMembers(10);
   let channel = createChannel("bingo", 6);
   let result = parseAll(
     Roller.handleMessage({
       text: "!roll bin",
-      member: members[0],
-      allMembers: members,
+      member: createMember(),
       channels: [channel],
     })
   );
@@ -209,21 +194,18 @@ test("should roll partially matching voice channel", (t) => {
 });
 
 test("should roll only matching voice channel and respect die size", (t) => {
-  let members = createMembers(10);
   let channels = [createChannel("bingo", 6), createChannel("foobar", 4)];
   let result = parseAll(
     Roller.handleMessage({
       text: "!rollchannel 1 bingo",
-      member: members[0],
-      allMembers: members,
+      member: createMember(),
       channels,
     })
   );
   let result2 = parseAll(
     Roller.handleMessage({
       text: "!rollchannel foobar 1",
-      member: members[0],
-      allMembers: members,
+      member: createMember(),
       channels,
     })
   );
@@ -232,13 +214,11 @@ test("should roll only matching voice channel and respect die size", (t) => {
 });
 
 test("rollchannel should require a channel name", (t) => {
-  let members = createMembers(10);
   let channels = [createChannel("bingo", 6), createChannel("foobar", 4)];
   let result = parseAll(
     Roller.handleMessage({
       text: "!rollchannel",
-      member: members[0],
-      allMembers: members,
+      member: createMember(),
       channels,
     })
   );
@@ -246,13 +226,11 @@ test("rollchannel should require a channel name", (t) => {
 });
 
 test("rollchannel should not be case sensitive", (t) => {
-  let members = createMembers(10);
   let channels = [createChannel("bingo", 6), createChannel("foobar", 4)];
   let result = parseAll(
     Roller.handleMessage({
       text: "!rollchannel BiNgO",
-      member: members[0],
-      allMembers: members,
+      member: createMember(),
       channels,
     })
   );
@@ -260,13 +238,11 @@ test("rollchannel should not be case sensitive", (t) => {
 });
 
 test("rollchannel should notify if there are no matching channels", (t) => {
-  let members = createMembers(10);
   let channels = [createChannel("bingo", 6), createChannel("foobar", 4)];
   let result = parseAll(
     Roller.handleMessage({
       text: "!rollchannel bingpot",
-      member: members[0],
-      allMembers: members,
+      member: createMember(),
       channels,
     })
   );

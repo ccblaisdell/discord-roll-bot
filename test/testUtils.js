@@ -32,16 +32,17 @@ function createMembers(n = 10) {
     "token",
     "tacocat",
   ];
-  return names.slice(0, n).map((displayName, idx) => {
+  const members = names.slice(0, n).map((displayName, idx) => {
     return createMember({ displayName, id: idx });
   });
+  return new Map(members.map((member) => [member.id, member]));
 }
 
 function createChannel(name, numMembers = 10, opts = {}) {
   return {
     name,
     members: createMembers(numMembers),
-    type: "voice",
+    type: "GUILD_VOICE",
     ...opts,
   };
 }

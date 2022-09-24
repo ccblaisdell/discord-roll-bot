@@ -2,6 +2,10 @@ module.exports = {
   byValue,
   chunk,
   createRoll,
+  createRollMember,
+  dedupMembers,
+  getChannelMembers,
+  isVoiceChannel,
   printRoll,
   removeInvalid: noBots,
   castDie,
@@ -52,4 +56,25 @@ function chunk(array, size) {
 
 function noBots(roll) {
   return !roll.isBot;
+}
+
+function dedupMembers(acc, member) {
+  return acc.some((m) => m.id === member.id) ? acc : acc.concat(member);
+}
+
+function isVoiceChannel(channel) {
+  return channel.type === "GUILD_VOICE";
+}
+
+function getChannelMembers(channel) {
+  return Array.from(channel.members.values());
+}
+
+function createRollMember(guildMember) {
+  return {
+    displayName: guildMember.displayName,
+    id: guildMember.id,
+    presence: { status: guildMember.presence.status },
+    user: { bot: guildMember.user.bot },
+  };
 }

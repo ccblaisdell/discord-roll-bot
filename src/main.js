@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const client = new Discord.Client();
 const Roller = require("./roller");
 const Sentry = require("@sentry/node");
 
@@ -34,17 +33,18 @@ require("http")
 
 client.on("ready", () => console.log("Connected!"));
 
-client.on("message", (msg) => {
+client.on("messageCreate", async (msg) => {
   try {
     let result = Roller.handleMessage({
-      allMembers: msg.channel.members.array(),
-      channels: msg.guild.channels.cache.array(),
-      text: msg.content,
+      channels: Array.from(msg.guild.channels.cache.values()),
       member: msg.member,
+      text: msg.content,
     });
     result && msg.channel.send(result);
   } catch (error) {
     msg.channel.send("☠️ Heck! I borked, sorry!!");
+    // rethrow so it gets reported
+    throw error;
   }
 });
 
