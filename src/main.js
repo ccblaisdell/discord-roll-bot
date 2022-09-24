@@ -3,9 +3,19 @@ const client = new Discord.Client();
 const Roller = require("./roller");
 const Sentry = require("@sentry/node");
 
+const client = new Discord.Client({
+  intents: [
+    "GUILDS",
+    "GUILD_MEMBERS",
+    "GUILD_MESSAGES",
+    "DIRECT_MESSAGES",
+    "MESSAGE_CONTENT",
+    "GUILD_PRESENCES",
+  ],
+});
+
 Sentry.init({
-  dsn:
-    "https://c3f534afc81d41dbaba0965909fa4240@o428959.ingest.sentry.io/5374848",
+  dsn: "https://c3f534afc81d41dbaba0965909fa4240@o428959.ingest.sentry.io/5374848",
 });
 
 const PORT = process.env.PORT || 3000;
