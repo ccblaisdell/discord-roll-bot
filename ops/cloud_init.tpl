@@ -15,7 +15,7 @@ users:
 apt:
   sources:
     nodesource:
-      source: deb https://deb.nodesource.com/node_10.x $RELEASE main
+      source: deb https://deb.nodesource.com/node_18.x $RELEASE main
       # from: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
       key: |
         -----BEGIN PGP PUBLIC KEY BLOCK-----
