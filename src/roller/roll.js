@@ -47,10 +47,6 @@ function rollChannel(channels, { channelName, dieSize }) {
 function rollAllChannels(channels, { dieSize }) {
   const members = channels
     .filter(isVoiceChannel)
-    .map((channel) => {
-      console.log(channel.name);
-      return channel;
-    })
     .filter((channel) => channel.name.toLowerCase() !== "afk")
     .map((channel) => getChannelMembers(channel).map(createRollMember))
     .flat()

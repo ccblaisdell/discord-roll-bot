@@ -7,7 +7,6 @@ import {
   parseOne,
   parseAll,
 } from "./testUtils";
-import { parse } from "../src/roller/cmd_line";
 
 test("should roll one", (t) => {
   let member = createMember();
