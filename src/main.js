@@ -4,13 +4,13 @@ const Sentry = require("@sentry/node");
 
 const client = new Discord.Client({
   intents: [
-    "GUILDS",
+    "DIRECT_MESSAGES",
     "GUILD_MEMBERS",
     "GUILD_MESSAGES",
-    "DIRECT_MESSAGES",
-    "MESSAGE_CONTENT",
     "GUILD_PRESENCES",
     "GUILD_VOICE_STATES",
+    "GUILDS",
+    "MESSAGE_CONTENT",
   ],
 });
 
