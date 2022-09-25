@@ -1,11 +1,21 @@
 const Discord = require("discord.js");
-const client = new Discord.Client();
 const Roller = require("./roller");
 const Sentry = require("@sentry/node");
 
+const client = new Discord.Client({
+  intents: [
+    "DIRECT_MESSAGES",
+    "GUILD_MEMBERS",
+    "GUILD_MESSAGES",
+    "GUILD_PRESENCES",
+    "GUILD_VOICE_STATES",
+    "GUILDS",
+    "MESSAGE_CONTENT",
+  ],
+});
+
 Sentry.init({
-  dsn:
-    "https://c3f534afc81d41dbaba0965909fa4240@o428959.ingest.sentry.io/5374848",
+  dsn: "https://c3f534afc81d41dbaba0965909fa4240@o428959.ingest.sentry.io/5374848",
 });
 
 const PORT = process.env.PORT || 3000;
@@ -24,17 +34,18 @@ require("http")
 
 client.on("ready", () => console.log("Connected!"));
 
-client.on("message", (msg) => {
+client.on("messageCreate", async (msg) => {
   try {
     let result = Roller.handleMessage({
-      allMembers: msg.channel.members.array(),
-      channels: msg.guild.channels.cache.array(),
-      text: msg.content,
+      channels: Array.from(msg.guild.channels.cache.values()),
       member: msg.member,
+      text: msg.content,
     });
     result && msg.channel.send(result);
   } catch (error) {
     msg.channel.send("☠️ Heck! I borked, sorry!!");
+    // rethrow so it gets reported
+    throw error;
   }
 });
 

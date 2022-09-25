@@ -3,7 +3,7 @@ const Roll = require("./roller/roll");
 
 module.exports = { handleMessage };
 
-function handleMessage({ allMembers, channels, member, text }) {
+function handleMessage({ channels, member, text }) {
   let { command, opts } = Cmd.parse(text);
   if (command === "ROLL_ALL") {
     return Roll.group(channels, opts);

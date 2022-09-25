@@ -2,6 +2,10 @@ const {
   byValue,
   chunk,
   createRoll,
+  createRollMember,
+  dedupMembers,
+  getChannelMembers,
+  isVoiceChannel,
   printRoll,
   removeInvalid,
 } = require("./utils");
@@ -17,8 +21,8 @@ function rollGroup(members, { dieSize }) {
   return `\`\`\`\n${parties}\n\`\`\``;
 }
 
-function rollOne(member, { dieSize }) {
-  const { value, name } = createRoll(member, dieSize);
+function rollOne(guildMember, { dieSize }) {
+  const { value, name } = createRoll(guildMember, dieSize);
   return `**${name}** rolled **${value}**`;
 }
 
@@ -27,18 +31,11 @@ function rollChannel(channels, { channelName, dieSize }) {
     return "⚠️ You must include a channel name with rollchannel.\nE.g. `!rollchannel bingpot`";
   }
   const members = channels
-    .filter((c) => c.type === "voice")
-    .filter((c) => c.name.toLowerCase().includes(channelName))
-    .map((c) =>
-      c.members.map((member) => ({
-        displayName: member.displayName,
-        id: member.id,
-        presence: { status: member.presence.status },
-        user: { bot: member.user.bot },
-      }))
-    )
-    .reduce((acc, members) => acc.concat(members), []) // flatten
-    .filter((m) => !!m) // remove undefined
+    .filter(isVoiceChannel)
+    .filter((channel) => channel.name.toLowerCase().includes(channelName))
+    .map((channel) => getChannelMembers(channel).map(createRollMember))
+    .flat()
+    .filter((rollMember) => !!rollMember) // remove undefined
     .reduce(dedupMembers, []);
 
   if (members.length === 0) {
@@ -49,18 +46,11 @@ function rollChannel(channels, { channelName, dieSize }) {
 
 function rollAllChannels(channels, { dieSize }) {
   const members = channels
-    .filter((c) => c.type === "voice")
-    .filter((c) => c.name.toLowerCase() !== "afk")
-    .map((c) =>
-      c.members.map((member) => ({
-        displayName: member.displayName,
-        id: member.id,
-        presence: { status: member.presence.status },
-        user: { bot: member.user.bot },
-      }))
-    )
-    .reduce((acc, members) => acc.concat(members), []) // flatten
-    .filter((m) => !!m) // remove undefined
+    .filter(isVoiceChannel)
+    .filter((channel) => channel.name.toLowerCase() !== "afk")
+    .map((channel) => getChannelMembers(channel).map(createRollMember))
+    .flat()
+    .filter((member) => !!member) // remove undefined
     .reduce(dedupMembers, []);
 
   if (members.length === 0) {
@@ -74,7 +64,3 @@ module.exports = {
   one: rollOne,
   channel: rollChannel,
 };
-
-function dedupMembers(acc, member) {
-  return acc.some((m) => m.id === member.id) ? acc : acc.concat(member);
-}
