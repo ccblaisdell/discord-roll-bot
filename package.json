@@ -1,6 +1,9 @@
 {
   "name": "roll-bot",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "engines": {
+    "node": "18.9.1"
+  },
   "description": "Dota RollBot",
   "main": "src/index.js",
   "author": "Colby Blaisdell",
