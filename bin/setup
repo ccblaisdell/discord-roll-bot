@@ -1,4 +1,5 @@
 npm install pm2 -g
+mkdir /home/ccblaisdell/discord-roll-bot
 cd /home/ccblaisdell/discord-roll-bot
 npm install
 sudo mv /home/ccblaisdell/.discord-roll-bot-env /home/ccblaisdell/discord-roll-bot/.env
