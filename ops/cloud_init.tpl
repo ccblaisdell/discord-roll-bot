@@ -91,12 +91,11 @@ write_files:
               proxy_pass http://localhost:3000;
           }
       }
-  - path: /home/ccblaisdell/.discord-roll-bot-env
+  - path: /home/ccblaisdell/discord-roll-bot/.env
     content: |
       DISCORD_API_TOKEN=${discord_api_token}
 
 runcmd:
-  - [mkdir, "/home/ccblaisdell/discord-roll-bot"]
   - [
       git,
       clone,
