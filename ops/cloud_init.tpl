@@ -102,10 +102,4 @@ runcmd:
       "https://github.com/ccblaisdell/discord-roll-bot.git",
       "/home/ccblaisdell/discord-roll-bot",
     ]
-  - [npm, install, pm2, "-g"],
-  - [cd, "/home/ccblaisdell/discord-roll-bot"],
-  - [npm, install],
-  - [mv, "/home/ccblaisdell/.discord-roll-bot-env", "/home/ccblaisdell/discord-roll-bot/.env"],
-  - [rm, "/etc/nginx/sites-enabled/default"],
-  - [pm2, start, npm, "--", start],
-  - [service, nginx, restart]
+  - ["/home/ccblaisdell/discord-roll-bot/bin/setup"]
