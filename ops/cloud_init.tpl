@@ -2,6 +2,8 @@
 ssh_deletekeys: True
 # disable ability to login via pw
 ssh_pwauth: False
+# Try setting it so root password doesn't immediately require a change, allowing sudo commands in setup
+chpasswd: { expire: False }
 
 users:
   - name: ccblaisdell
@@ -102,4 +104,4 @@ runcmd:
       "https://github.com/ccblaisdell/discord-roll-bot.git",
       "/home/ccblaisdell/discord-roll-bot",
     ]
-  - [sudo, "/home/ccblaisdell/discord-roll-bot/bin/setup"]
+  - ["/home/ccblaisdell/discord-roll-bot/bin/setup"]
