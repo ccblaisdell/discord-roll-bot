@@ -96,6 +96,7 @@ write_files:
       DISCORD_API_TOKEN=${discord_api_token}
 
 runcmd:
+  - [mkdir, "/home/ccblaisdell/discord-roll-bot"]
   - [
       git,
       clone,
