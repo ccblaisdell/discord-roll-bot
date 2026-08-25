@@ -34,6 +34,11 @@ client.on("ready", async () => {
   console.log("Connected!");
   await client.application.commands.set(Commands);
   console.log("Slash commands registered!");
+
+  console.log(`In ${client.guilds.cache.size} server(s):`);
+  client.guilds.cache.forEach((guild) => {
+    console.log(`  ${guild.name} (${guild.id})`);
+  });
 });
 
 client.on("interactionCreate", async (interaction) => {
