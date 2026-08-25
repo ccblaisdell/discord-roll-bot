@@ -1,10 +1,10 @@
 const Cmd = require("./roller/cmd_line");
 const Roll = require("./roller/roll");
 
-module.exports = { handleMessage };
+module.exports = { handleInteraction };
 
-function handleMessage({ channels, member, text }) {
-  let { command, opts } = Cmd.parse(text);
+function handleInteraction(interaction, { channels, member }) {
+  let { command, opts } = Cmd.parse(interaction);
   if (command === "ROLL_ALL") {
     return Roll.group(channels, opts);
   } else if (command === "ROLL_CHANNEL") {

@@ -47,6 +47,17 @@ function createChannel(name, numMembers = 10, opts = {}) {
   };
 }
 
+function createInteraction({ commandName, subcommand, channel, dieSize }) {
+  return {
+    commandName,
+    options: {
+      getSubcommand: () => subcommand,
+      getString: (name) => (name === "channel" ? channel ?? null : null),
+      getInteger: (name) => (name === "die_size" ? dieSize ?? null : null),
+    },
+  };
+}
+
 // parse result text
 
 function parseOne(text) {
@@ -73,6 +84,7 @@ function parseAll(text) {
 
 module.exports = {
   createChannel,
+  createInteraction,
   createMember,
   createMembers,
   parseOne,
