@@ -32,7 +32,13 @@ require("http")
     console.log(`Rollbot running on port ${PORT}`);
   });
 
-client.on("ready", () => console.log("Connected!"));
+client.on("ready", () => {
+  console.log("Connected!");
+  console.log(`In ${client.guilds.cache.size} server(s):`);
+  client.guilds.cache.forEach((guild) => {
+    console.log(`  ${guild.name} (${guild.id})`);
+  });
+});
 
 client.on("messageCreate", async (msg) => {
   try {
