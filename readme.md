@@ -1,7 +1,10 @@
 # Installation
 
-[Invite this bot](https://discordapp.com/oauth2/authorize?client_id=511278542969896962&scope=bot+applications.commands)
+[Invite this bot](https://discord.com/oauth2/authorize?client_id=511278542969896962&scope=bot+applications.commands)
 to your server.
+
+By using the bot you agree to the [Terms of Service](TERMS.md). See the
+[Privacy Policy](PRIVACY.md) for what data it accesses.
 
 # Usage
 
@@ -19,8 +22,8 @@ Roll a single 100-sided (or `die_size`-sided) die for you, and respond with the 
 
 ## /roll all [die_size]
 
-Roll dice for everyone in the room who is not offline, idle, or dnd. It will respond with
-the results in descending order.
+Roll dice for everyone in your server's voice channels (except a channel named `afk`),
+skipping bots. It will respond with the results in descending order.
 
 > `/roll all`  
 > Rollbot [bot]
