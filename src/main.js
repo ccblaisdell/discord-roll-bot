@@ -23,7 +23,7 @@ require("http")
   .createServer((req, res) => {
     res.writeHead(200, { "Content-Type": "text/html" });
     res.end(
-      "<html><style>body {display: flex; justify-content: center; align-items: center; font-family: sans-serif; background: black; color: white;}</style><div>RollBot is ready</div>"
+      "<html><style>body {display: flex; justify-content: center; align-items: center; font-family: sans-serif; background: black; color: white; flex-direction: column; gap: 1em;} a {color: #8ea1e1;}</style><div>RollBot is ready</div><a href=\"https://discord.com/oauth2/authorize?client_id=511278542969896962\">Add RollBot to your server</a>"
     );
   })
   .listen(PORT, () => {
