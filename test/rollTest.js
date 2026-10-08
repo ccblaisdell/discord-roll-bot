@@ -90,25 +90,26 @@ test("should not include bots", (t) => {
   t.is(0, botResults.length);
 });
 
-test("should not include offline or afk", (t) => {
-  let offline = createMember({ displayName: "offline", status: "offline" });
-  let idle = createMember({ displayName: "idle", status: "idle" });
-  let dnd = createMember({ displayName: "dnd", status: "dnd" });
-  let members = createMembers(5)
-    .set("offline", offline)
-    .set("idle", idle)
-    .set("dnd", dnd);
+test("should roll members without a presence", (t) => {
+  // Without the presence intent, discord.js reports presence as null
+  let member = { ...createMember({ displayName: "ghost" }), presence: null };
+  let members = createMembers(2).set("ghost", { ...member, id: "ghost" });
   let channels = [createChannel("bingo", 0, { members })];
-  let result = parseAll(
+  let all = parseAll(
     Roller.handleInteraction(
       createInteraction({ commandName: "roll", subcommand: "all" }),
-      { member: createMember(), channels }
+      { member, channels }
     )
   );
-  t.is(5, result.lines.length);
-  t.true(result.lines.every((line) => line.name !== offline.displayName));
-  t.true(result.lines.every((line) => line.name !== idle.displayName));
-  t.true(result.lines.every((line) => line.name !== dnd.displayName));
+  let one = parseOne(
+    Roller.handleInteraction(
+      createInteraction({ commandName: "roll", subcommand: "self" }),
+      { member }
+    )
+  );
+  t.is(3, all.lines.length);
+  t.true(all.lines.some((line) => line.name === "ghost"));
+  t.is("ghost", one.name);
 });
 
 test("should respect die size args for group", (t) => {

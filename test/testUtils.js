@@ -1,16 +1,12 @@
 function createMember(memberAttrs = {}) {
   const {
     displayName = "grif",
-    status = "online",
     bot = false,
     id = 1,
   } = memberAttrs;
   return {
     displayName,
     id,
-    presence: {
-      status,
-    },
     user: {
       bot,
     },
