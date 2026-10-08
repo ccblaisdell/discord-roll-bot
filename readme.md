@@ -1,6 +1,6 @@
 # Installation
 
-[Invite this bot](https://discord.com/oauth2/authorize?client_id=511278542969896962&scope=bot+applications.commands)
+[Invite this bot](https://discord.com/oauth2/authorize?client_id=511278542969896962)
 to your server.
 
 By using the bot you agree to the [Terms of Service](TERMS.md). See the
