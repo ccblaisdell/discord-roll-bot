@@ -4,12 +4,8 @@ const Commands = require("./roller/commands");
 const Sentry = require("@sentry/node");
 
 const client = new Discord.Client({
-  intents: [
-    "GUILD_MEMBERS",
-    "GUILD_PRESENCES",
-    "GUILD_VOICE_STATES",
-    "GUILDS",
-  ],
+  // Only non-privileged intents: voice channel members arrive with voice states
+  intents: ["GUILD_VOICE_STATES", "GUILDS"],
 });
 
 Sentry.init({
@@ -59,4 +55,8 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 
-client.login(process.env.DISCORD_API_TOKEN);
+client.login(process.env.DISCORD_API_TOKEN).catch((error) => {
+  // Exit so pm2 shows the failure instead of the http server keeping us "online"
+  console.error("Failed to log in to Discord:", error);
+  process.exit(1);
+});

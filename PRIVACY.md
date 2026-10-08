@@ -13,8 +13,7 @@ bot holds in memory while it is running:
 
 - **Server information:** server name and ID, and the names and types of its channels.
 - **Voice channel membership:** which members are currently in which voice channels.
-- **Member information:** user IDs, display names, whether an account is a bot, and online
-  status (presence).
+- **Member information:** user IDs, display names, and whether an account is a bot.
 - **Commands you run:** the slash command you used and its options (such as a channel name or
   die size).
 
